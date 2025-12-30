@@ -6,16 +6,12 @@ import pl.eduard.colors.ConsoleColors;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.SortedMap;
 
 public class TaskManager {
     public static final String FILENAME = "tasks.csv";
     public static void main(String[] args) {
-//        addTask();
-        removeTask();
-        String[][] t = tasks(FILENAME);
-        for (int i = 0; i < t.length; i++) {
-            System.out.println(i + ": " + Arrays.toString(t[i]));
-        }
+        selectingOptions();
     }
 
     public static String selectingOptions() {
@@ -33,14 +29,14 @@ public class TaskManager {
             case "remove":
                 removeTask();
                 break;
-//            case "list":
-//                listOfTasks();
-//                break;
-//            case "exit":
-//                exitFromTasks();
-//                break;
-//            default:
-//                System.out.println("Please select a correct option.");
+            case "list":
+                listOfTasks();
+                break;
+            case "exit":
+                exitFromTasks();
+                break;
+            default:
+                System.out.println("Please select a correct option.");
         }
         return s;
     }
@@ -91,20 +87,8 @@ public class TaskManager {
         } catch (IOException e) {
             System.out.println("Something went wrong.");
         }
-    }
 
-    public static String[] readTasks() {
-        File file = new File(FILENAME);
-        String[] lines = new String[0];
-        try {
-            Scanner scanner = new Scanner(file);
-            while (scanner.hasNextLine()) {
-                lines = addElementToTable(lines, scanner.nextLine());
-            }
-        } catch (FileNotFoundException e) {
-            System.out.println("Ops... file not found.");
-        }
-        return lines;
+        selectingOptions();
     }
 
     public static String[] addElementToTable(String[] table, String elementToAdd) {
@@ -114,8 +98,8 @@ public class TaskManager {
     }
 
     public static void removeTask() {
-        String[][] listOfTasks = tasks(FILENAME);
-        int maxIndex = listOfTasks.length - 1;
+        String[][] taskList = tasks(FILENAME);
+        int maxIndex = taskList.length - 1;
 
         Scanner scanner = new Scanner(System.in);
         System.out.println("Please select number to remove:");
@@ -132,12 +116,12 @@ public class TaskManager {
             index = scanner.nextInt();
         }
 
-        String[][] newTasks = new String[maxIndex][listOfTasks[0].length];
+        String[][] newTasks = new String[maxIndex][taskList[0].length];
 
         int newIndex = 0;
-        for (int i = 0; i < listOfTasks.length; i++) {
+        for (int i = 0; i < taskList.length; i++) {
             if (i != index) {
-                newTasks[newIndex++] = listOfTasks[i];
+                newTasks[newIndex++] = taskList[i];
             }
         }
 
@@ -148,5 +132,20 @@ public class TaskManager {
         } catch (IOException e) {
             System.out.println("Cannot save data to the file.");
         }
+
+        selectingOptions();
+    }
+
+    public static void listOfTasks() {
+        String[][] listOfTasks = tasks(FILENAME);
+        for (int i = 0; i < listOfTasks.length; i++) {
+            System.out.println(i + " : " + Arrays.toString(listOfTasks[i]));
+        }
+
+        selectingOptions();
+    }
+
+    public static void exitFromTasks() {
+        System.out.println(ConsoleColors.RED + "Bye bye!" + ConsoleColors.RESET);
     }
 }
