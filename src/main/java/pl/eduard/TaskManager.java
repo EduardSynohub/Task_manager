@@ -6,7 +6,6 @@ import pl.eduard.colors.ConsoleColors;
 import java.io.*;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.SortedMap;
 
 public class TaskManager {
     public static final String FILENAME = "tasks.csv";
